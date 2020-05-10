@@ -21,7 +21,7 @@ class UserController extends Controller
         if ($is_created) {
             return response()->json(["mesage" => "created/updated"], 200);
         } else {
-            return response()->json(["mesage" => "fail create or update user something went worng in service sso_mange"], 500);
+            return response()->json(["mesage" => "fail create or update user something went worng in service sso_mange pls contact developer"], 500);
         }
     }
 }
