@@ -11,6 +11,11 @@ class UserRepository implements UserRepositoryInterface
         $users = User::all();
         return $users;
     }
+    public function getlUserById($user_id)
+    {
+        $user = User::where('user_id', $user_id)->first();
+        return $user;
+    }
     public function createlUser($data)
     {
 

@@ -16,3 +16,4 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::post('/users', 'UserController@store');
+Route::get('/users/{user_id}', 'UserController@getUserById');

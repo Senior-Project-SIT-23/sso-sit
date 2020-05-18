@@ -24,4 +24,13 @@ class UserController extends Controller
             return response()->json(["mesage" => "fail create or update user something went worng in service sso_mange pls contact developer"], 500);
         }
     }
+    public function getUserById(Request $request, $user_id)
+    {
+        $user = $this->user->getlUserById($user_id);
+        if ($user) {
+            return response()->json($user, 200);
+        } else {
+            return response()->json(["mesage" => "user not found"], 404);
+        }
+    }
 }
