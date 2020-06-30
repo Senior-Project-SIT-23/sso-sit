@@ -18,7 +18,6 @@ class UserRepository implements UserRepositoryInterface
     }
     public function createlUser($data)
     {
-
         $user = User::where('user_id', $data['uid'])->first();
         try {
             if (!$user) {

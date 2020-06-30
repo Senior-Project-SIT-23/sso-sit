@@ -17,3 +17,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/users', 'UserController@store');
 Route::get('/users/{user_id}', 'UserController@getUserById');
+
+Route::get('/applications/{app_id}', 'ApplicationController@getApplicationById');
+Route::post('/applications/{app_id}/check-secret', 'ApplicationController@checkSecret');
