@@ -17,7 +17,10 @@ class ApplicationController extends Controller
     public function getApplicationById(Request $request, $app_id)
     {
         $applications = $this->app->getApplicationById($app_id);
-        return response()->json($applications, 200);
+        if ($applications) {
+            return response()->json($applications, 200);
+        }
+        return response()->json([], 404);
     }
     public function checkSecret(Request $request, $app_id)
     {
