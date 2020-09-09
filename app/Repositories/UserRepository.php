@@ -25,11 +25,13 @@ class UserRepository implements UserRepositoryInterface
                 $user->user_id = $data['uid'];
                 $user->name_th = $data['name_th'];
                 $user->name_en = $data['name'];
+                $user->user_type = $data['group'];
                 $user->email = $data['email'];
                 $user->save();
             } else {
                 $user->name_th = $data['name_th'];
                 $user->name_en = $data['name'];
+                $user->user_type = $data['group'];
                 $user->email = $data['email'];
                 $user->save();
             }

@@ -16,12 +16,12 @@ class CreateIntegrationTable extends Migration
         Schema::create('integrations', function (Blueprint $table) {
             $table->bigIncrements("integrations_id");
             $table->string("user_id", 30);
-            $table->string("app_id", 30);
+            $table->bigInteger("app_id")->unsigned();
             $table->enum("status", ["accept", "deny"]);
             $table->timestamps();
 
             $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade');
-            $table->foreign('app_id')->references('app_id')->on('applications')->onDelete('cascade');
+            $table->foreign('app_id')->references('id')->on('applications')->onDelete('cascade');
         });
     }
 

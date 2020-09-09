@@ -20,3 +20,12 @@ Route::get('/users/{user_id}', 'UserController@getUserById');
 
 Route::get('/applications/{app_id}', 'ApplicationController@getApplicationById');
 Route::post('/applications/{app_id}/check-secret', 'ApplicationController@checkSecret');
+
+Route::group(['middleware' => 'handleputformdata'], function () {
+    Route::group(['middleware' => 'checkAuth'], function () {
+        Route::post('/applications', 'ApplicationController@store');
+        Route::put('/applications/{id}', 'ApplicationController@update');
+        Route::put('/applications/approve-reject/{id}', 'ApplicationController@updateStatusById');
+        Route::delete('/applications/{id}', 'ApplicationController@destroy');
+    });
+});

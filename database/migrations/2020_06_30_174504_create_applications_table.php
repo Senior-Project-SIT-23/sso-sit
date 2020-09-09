@@ -14,10 +14,12 @@ class CreateApplicationsTable extends Migration
     public function up()
     {
         Schema::create('applications', function (Blueprint $table) {
-            $table->string('app_id', 30)->primary();
+            $table->bigIncrements("id");
+            $table->string('app_id', 30);
             $table->string('user_id', 30);
             $table->string('secret_id')->nullable();
             $table->string('name')->nullable();
+            $table->text('detail')->nullable();
             $table->enum("status", ["reject", "pending", "approve"])->default("pending");
             $table->timestamps();
 
