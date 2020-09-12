@@ -18,14 +18,22 @@ use Illuminate\Support\Facades\Route;
 Route::post('/users', 'UserController@store');
 Route::get('/users/{user_id}', 'UserController@getUserById');
 
-Route::get('/applications/{app_id}', 'ApplicationController@getApplicationById');
-Route::post('/applications/{app_id}/check-secret', 'ApplicationController@checkSecret');
+Route::get('/applications/client/{app_id}', 'ApplicationController@getApplicationById');
+Route::post('/applications/client/{app_id}/check-secret', 'ApplicationController@checkSecret');
 
-Route::group(['middleware' => 'handleputformdata'], function () {
-    Route::group(['middleware' => 'checkAuth'], function () {
-        Route::post('/applications', 'ApplicationController@store');
+
+Route::group(['middleware' => 'checkAuth'], function () {
+    Route::get('/applications/status/approve', 'ApplicationController@indexApprove');
+    Route::get('/applications/status/pending', 'ApplicationController@indexPending');
+    Route::get('/applications/status/reject', 'ApplicationController@indexReject');
+
+    Route::get('/my-applications', 'ApplicationController@indexMe');
+
+    Route::post('/applications', 'ApplicationController@store');
+    Route::delete('/applications/{id}', 'ApplicationController@destroy');
+
+    Route::group(['middleware' => 'handleputformdata'], function () {
         Route::put('/applications/{id}', 'ApplicationController@update');
         Route::put('/applications/approve-reject/{id}', 'ApplicationController@updateStatusById');
-        Route::delete('/applications/{id}', 'ApplicationController@destroy');
     });
 });

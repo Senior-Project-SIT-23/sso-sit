@@ -14,6 +14,30 @@ class ApplicationRepository implements ApplicationRepositoryInterface
         return $apps;
     }
 
+    public function getAllByUserId($user_id)
+    {
+        $apps = Application::where("user_id", $user_id)->get();
+        foreach ($apps as $app) {
+            $user = $app->user()->first();
+            $app['user_name_th'] = $user->name_th;
+            $app['user_name_en'] = $user->name_en;
+            $app['email'] = $user->email;
+        }
+        return $apps;
+    }
+
+    public function getAllByStatus($status)
+    {
+        $apps = Application::where("status", $status)->get();
+        foreach ($apps as $app) {
+            $user = $app->user()->first();
+            $app['user_name_th'] = $user->name_th;
+            $app['user_name_en'] = $user->name_en;
+            $app['email'] = $user->email;
+        }
+        return $apps;
+    }
+
     public function getApplicationById($app_id)
     {
         $app = Application::where('app_id', $app_id)->first();

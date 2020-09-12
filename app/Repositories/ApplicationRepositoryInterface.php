@@ -6,6 +6,8 @@ namespace App\Repositories;
 interface ApplicationRepositoryInterface
 {
     public function getApplicationById($app_id);
+    public function getAllByStatus($status);
+    public function getAllByUserId($user_id);
     public function getAllApplications();
     public function createApplication($data);
     public function updateApplication($data);

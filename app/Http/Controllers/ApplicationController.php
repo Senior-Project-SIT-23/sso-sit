@@ -22,7 +22,44 @@ class ApplicationController extends Controller
         }
         return response()->json([], 404);
     }
-    
+
+    public function indexMe(Request $request)
+    {
+        $data["user_id"] = $request->all()["user_id"];
+        $applications = $this->app->getAllByUserId($data);
+        if ($applications) {
+            return response()->json($applications, 200);
+        }
+        return response()->json("not found Applications", 404);
+    }
+
+    public function indexPending(Request $request)
+    {
+        $applications = $this->app->getAllByStatus("pending");
+        if ($applications) {
+            return response()->json($applications, 200);
+        }
+        return response()->json("not found Applications", 404);
+    }
+
+    public function indexApprove(Request $request)
+    {
+        $applications = $this->app->getAllByStatus("approve");
+        if ($applications) {
+            return response()->json($applications, 200);
+        }
+        return response()->json("not found Applications", 404);
+    }
+
+    public function indexReject(Request $request)
+    {
+        $applications = $this->app->getAllByStatus("reject");
+        if ($applications) {
+            return response()->json($applications, 200);
+        }
+        return response()->json("not found Applications", 404);
+    }
+
     public function checkSecret(Request $request, $app_id)
     {
         $data = $request->all();
