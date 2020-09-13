@@ -14,13 +14,22 @@ class ApplicationController extends Controller
         $this->app = $app;
     }
 
-    public function getApplicationById(Request $request, $app_id)
+    public function getApplicationByAppId(Request $request, $app_id)
     {
-        $applications = $this->app->getApplicationById($app_id);
+        $applications = $this->app->getApplicationByAppId($app_id);
         if ($applications) {
             return response()->json($applications, 200);
         }
-        return response()->json([], 404);
+        return response()->json(["message" => "app not found"], 404);
+    }
+    
+    public function getApplicationById(Request $request, $id)
+    {
+        $applications = $this->app->getApplicationById($id);
+        if ($applications) {
+            return response()->json($applications, 200);
+        }
+        return response()->json(["message" => "app not found"], 404);
     }
 
     public function indexMe(Request $request)

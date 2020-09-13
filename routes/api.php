@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('/users', 'UserController@store');
 Route::get('/users/{user_id}', 'UserController@getUserById');
 
-Route::get('/applications/client/{app_id}', 'ApplicationController@getApplicationById');
+Route::get('/applications/client/{app_id}', 'ApplicationController@getApplicationByAppId');
 Route::post('/applications/client/{app_id}/check-secret', 'ApplicationController@checkSecret');
 
 
@@ -30,6 +30,7 @@ Route::group(['middleware' => 'checkAuth'], function () {
     Route::get('/my-applications', 'ApplicationController@indexMe');
 
     Route::post('/applications', 'ApplicationController@store');
+    Route::get('/applications/{app_id}', 'ApplicationController@getApplicationById');
     Route::delete('/applications/{id}', 'ApplicationController@destroy');
 
     Route::group(['middleware' => 'handleputformdata'], function () {
