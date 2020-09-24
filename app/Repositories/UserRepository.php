@@ -11,9 +11,36 @@ class UserRepository implements UserRepositoryInterface
         $users = User::all();
         return $users;
     }
-    public function getlUserById($user_id)
+    public function getUsersWithRole()
+    {
+        $users = User::all();
+        foreach ($users as $key => $user) {
+            $user_roles = $user->user_role()->get();
+            $roles = array();
+            foreach ($user_roles as $key => $user_role) {
+                $role = $user_role->role()->first();
+                $decode_role = json_decode($role, true);
+                unset($decode_role["created_at"]);
+                unset($decode_role["updated_at"]);
+                array_push($roles, $decode_role);
+            }
+            $user["roles"] = $roles;
+        }
+        return $users;
+    }
+    public function getUserById($user_id)
     {
         $user = User::where('user_id', $user_id)->first();
+        $user_roles = $user->user_role()->get();
+        $roles = array();
+        foreach ($user_roles as $key => $user_role) {
+            $role = $user_role->role()->first();
+            $decode_role = json_decode($role, true);
+            unset($decode_role["created_at"]);
+            unset($decode_role["updated_at"]);
+            array_push($roles, $decode_role);
+        }
+        $user["roles"] = $roles;
         return $user;
     }
     public function createlUser($data)

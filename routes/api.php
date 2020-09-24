@@ -23,17 +23,22 @@ Route::post('/applications/client/{app_id}/check-secret', 'ApplicationController
 
 
 Route::group(['middleware' => 'checkAuth'], function () {
-    Route::get('/applications/status/approve', 'ApplicationController@indexApprove');
-    Route::get('/applications/status/pending', 'ApplicationController@indexPending');
-    Route::get('/applications/status/reject', 'ApplicationController@indexReject');
-
-    Route::get('/my-applications', 'ApplicationController@indexMe');
-
-    Route::post('/applications', 'ApplicationController@store');
-    Route::get('/applications/{app_id}', 'ApplicationController@getApplicationById');
-    Route::delete('/applications/{id}', 'ApplicationController@destroy');
-
     Route::group(['middleware' => 'handleputformdata'], function () {
+        Route::get('/applications/status/approve', 'ApplicationController@indexApprove');
+        Route::get('/applications/status/pending', 'ApplicationController@indexPending');
+        Route::get('/applications/status/reject', 'ApplicationController@indexReject');
+
+        Route::get('/my-applications', 'ApplicationController@indexMe');
+
+        Route::post('/applications', 'ApplicationController@store');
+        Route::get('/applications/{app_id}', 'ApplicationController@getApplicationById');
+        Route::delete('/applications/{id}', 'ApplicationController@destroy');
+
+        Route::get('/roles', 'RoleController@index');
+        Route::get('/roles/users', 'UserController@getUsersWithRole');
+        Route::post('/roles/users', 'RoleController@storeUserRole');
+        Route::delete('/roles/users', 'RoleController@destroyUserRole');
+
         Route::put('/applications/{id}', 'ApplicationController@update');
         Route::put('/applications/approve-reject/{id}', 'ApplicationController@updateStatusById');
     });

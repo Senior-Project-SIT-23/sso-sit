@@ -47,7 +47,6 @@ class ApplicationRepository implements ApplicationRepositoryInterface
     public function getApplicationById($id)
     {
         $app = Application::where('id', $id)->first();
-        $app['policy'] = $app->application_config()->first()->policy;
 
         return $app;
     }
@@ -63,7 +62,6 @@ class ApplicationRepository implements ApplicationRepositoryInterface
         $app->save();
 
         $app_config = new ApplicationConfig();
-        $app_config->policy = $data["policy"];
         $app_config->app_id = $app->id;
         $app_config->save();
 
@@ -80,7 +78,6 @@ class ApplicationRepository implements ApplicationRepositoryInterface
         $app->detail = $data["detail"];
 
         $app_config = $app->application_config()->first();
-        $app_config->policy = $data["policy"];
         $app_config->save();
         $app->save();
 

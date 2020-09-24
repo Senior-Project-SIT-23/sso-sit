@@ -22,7 +22,7 @@ class ApplicationController extends Controller
         }
         return response()->json(["message" => "app not found"], 404);
     }
-    
+
     public function getApplicationById(Request $request, $id)
     {
         $applications = $this->app->getApplicationById($id);

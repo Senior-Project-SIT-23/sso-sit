@@ -17,5 +17,9 @@ class RepositoryServiceProvider extends ServiceProvider
             'App\Repositories\ApplicationRepositoryInterface',
             'App\Repositories\ApplicationRepository'
         );
+        $this->app->bind(
+            'App\Repositories\RoleRepositoryInterface',
+            'App\Repositories\RoleRepository'
+        );
     }
 }

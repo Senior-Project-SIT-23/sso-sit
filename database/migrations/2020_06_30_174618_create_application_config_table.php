@@ -16,7 +16,6 @@ class CreateApplicationConfigTable extends Migration
         Schema::create('application_config', function (Blueprint $table) {
             $table->bigIncrements("manage_id");
             $table->bigInteger("app_id")->unsigned();
-            $table->text("policy");
             $table->timestamps();
 
             $table->foreign('app_id')->references('id')->on('applications')->onDelete('cascade');
