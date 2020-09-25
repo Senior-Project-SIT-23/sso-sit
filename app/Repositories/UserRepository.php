@@ -62,7 +62,7 @@ class UserRepository implements UserRepositoryInterface
                 $user->email = $data['email'];
                 $user->save();
             }
-            return true;
+            return $user;
         } catch (\Throwable $th) {
             return  false;
         }

@@ -3,14 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Repositories\RoleRepositoryInterface;
 use App\Repositories\UserRepositoryInterface;
 
 class UserController extends Controller
 {
+    private $role;
     private $user;
 
-    public function __construct(UserRepositoryInterface $user)
+    public function __construct(UserRepositoryInterface $user, RoleRepositoryInterface $role)
     {
+        $this->role = $role;
         $this->user = $user;
     }
 
@@ -19,6 +22,9 @@ class UserController extends Controller
         $data = $request->all();
         $is_created = $this->user->createlUser($data['sync_attrs']);
         if ($is_created) {
+            $data["user_id"] = $is_created->user_id;
+            $data["role_id"] = 2;
+            $this->role->createUserRole($data);
             return response()->json(["mesage" => "created/updated"], 200);
         } else {
             return response()->json(["mesage" => "fail create or update user something went wrong in service sso_mange pls contact developer"], 500);
