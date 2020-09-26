@@ -23,7 +23,7 @@ class UserController extends Controller
         $is_created = $this->user->createlUser($data['sync_attrs']);
         if ($is_created) {
             $data["user_id"] = $is_created->user_id;
-            $data["role_id"] = 2;
+            $data["role_id"] = 3;
             $this->role->createUserRole($data);
             $user = $this->user->getUserById($data["user_id"]);
             return response()->json($user, 200);
