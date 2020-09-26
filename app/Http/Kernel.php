@@ -53,6 +53,8 @@ class Kernel extends HttpKernel
      */
     protected $routeMiddleware = [
         'checkAuth' => \App\Http\Middleware\CheckAuth::class,
+        'checkRoleAdmin' => \App\Http\Middleware\CheckRoleAdmin::class,
+        'checkRoleApprover' => \App\Http\Middleware\CheckRoleApprover::class,
         'handleputformdata' => \App\Http\Middleware\HandlePutFormData::class,
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,

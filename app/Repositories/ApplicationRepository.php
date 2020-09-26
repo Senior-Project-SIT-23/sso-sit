@@ -74,7 +74,10 @@ class ApplicationRepository implements ApplicationRepositoryInterface
 
     public function updateApplication($data)
     {
-        $app = Application::where("id", $data["id"])->first();
+        $app = Application::where("id", $data["id"])->where("user_id", $data["user_id"])->first();
+        if (!$app) {
+            return false;
+        }
         $app->detail = $data["detail"];
 
         $app_config = $app->application_config()->first();

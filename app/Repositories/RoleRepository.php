@@ -10,7 +10,7 @@ class RoleRepository implements RoleRepositoryInterface
 {
     public function getAllRole()
     {
-        return Role::all();
+        return Role::orderBy("created_at", "asc")->get();
     }
 
     public function createUserRole($data)

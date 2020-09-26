@@ -25,7 +25,8 @@ class UserController extends Controller
             $data["user_id"] = $is_created->user_id;
             $data["role_id"] = 2;
             $this->role->createUserRole($data);
-            return response()->json(["mesage" => "created/updated"], 200);
+            $user = $this->user->getUserById($data["user_id"]);
+            return response()->json($user, 200);
         } else {
             return response()->json(["mesage" => "fail create or update user something went wrong in service sso_mange pls contact developer"], 500);
         }

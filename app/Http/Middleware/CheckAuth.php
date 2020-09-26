@@ -36,6 +36,7 @@ class CheckAuth
                 }
                 $user_id = $decoded->user_id;
                 $request['user_id'] = $user_id;
+                $request['roles'] = $decoded->roles;
                 return $next($request);
             } catch (ExpiredException $exp) {
                 return response()->json(

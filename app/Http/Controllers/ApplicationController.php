@@ -104,7 +104,7 @@ class ApplicationController extends Controller
         if ($application) {
             return response()->json($application, 200);
         }
-        return response()->json("something wrong", 400);
+        return response()->json("Application not found", 400);
     }
 
     public function updateStatusById(Request $request, $id)

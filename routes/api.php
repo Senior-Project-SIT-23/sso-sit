@@ -22,24 +22,28 @@ Route::get('/applications/client/{app_id}', 'ApplicationController@getApplicatio
 Route::post('/applications/client/{app_id}/check-secret', 'ApplicationController@checkSecret');
 
 
-Route::group(['middleware' => 'checkAuth'], function () {
-    Route::group(['middleware' => 'handleputformdata'], function () {
-        Route::get('/applications/status/approve', 'ApplicationController@indexApprove');
-        Route::get('/applications/status/pending', 'ApplicationController@indexPending');
-        Route::get('/applications/status/reject', 'ApplicationController@indexReject');
-
-        Route::get('/my-applications', 'ApplicationController@indexMe');
+Route::group(['middleware' => 'handleputformdata'], function () {
+    Route::group(['middleware' => 'checkAuth'], function () {
 
         Route::post('/applications', 'ApplicationController@store');
-        Route::get('/applications/{app_id}', 'ApplicationController@getApplicationById');
+        Route::get('/my-applications', 'ApplicationController@indexMe');
+        Route::put('/applications/{id}', 'ApplicationController@update');
         Route::delete('/applications/{id}', 'ApplicationController@destroy');
 
-        Route::get('/roles', 'RoleController@index');
-        Route::get('/roles/users', 'UserController@getUsersWithRole');
-        Route::post('/roles/users', 'RoleController@storeUserRole');
-        Route::delete('/roles/users', 'RoleController@destroyUserRole');
+        Route::get('/applications/{app_id}', 'ApplicationController@getApplicationById');
 
-        Route::put('/applications/{id}', 'ApplicationController@update');
-        Route::put('/applications/approve-reject/{id}', 'ApplicationController@updateStatusById');
+        Route::group(['middleware' => 'checkRoleAdmin'], function () {
+            Route::get('/roles', 'RoleController@index');
+            Route::get('/roles/users', 'UserController@getUsersWithRole');
+            Route::post('/roles/users', 'RoleController@storeUserRole');
+            Route::delete('/roles/users', 'RoleController@destroyUserRole');
+        });
+
+        Route::group(['middleware' => 'checkRoleApprover'], function () {
+            Route::get('/applications/status/approve', 'ApplicationController@indexApprove');
+            Route::get('/applications/status/pending', 'ApplicationController@indexPending');
+            Route::get('/applications/status/reject', 'ApplicationController@indexReject');
+            Route::put('/applications/approve-reject/{id}', 'ApplicationController@updateStatusById');
+        });
     });
 });

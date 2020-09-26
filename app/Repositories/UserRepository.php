@@ -31,7 +31,7 @@ class UserRepository implements UserRepositoryInterface
     public function getUserById($user_id)
     {
         $user = User::where('user_id', $user_id)->first();
-        $user_roles = $user->user_role()->get();
+        $user_roles = $user->user_role()->orderBy("role_id", "ASC")->get();
         $roles = array();
         foreach ($user_roles as $key => $user_role) {
             $role = $user_role->role()->first();
