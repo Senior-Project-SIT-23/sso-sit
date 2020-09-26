@@ -73,7 +73,7 @@ class ApplicationController extends Controller
     {
         $data = $request->all();
         $client_secret = $data["client_secret"];
-        $application = $this->app->getApplicationById($app_id);
+        $application = $this->app->getApplicationByAppId($app_id);
         if (!$application) {
             return response()->json(["message" => "not match"], 404);
         }
