@@ -15,6 +15,7 @@ class CreateApplicationConfigTable extends Migration
     {
         Schema::create('application_config', function (Blueprint $table) {
             $table->bigIncrements("manage_id");
+            $table->text("redirect_uri");
             $table->bigInteger("app_id")->unsigned();
             $table->timestamps();
 

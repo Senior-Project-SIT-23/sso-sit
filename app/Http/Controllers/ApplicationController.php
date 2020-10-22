@@ -18,7 +18,15 @@ class ApplicationController extends Controller
     {
         $applications = $this->app->getApplicationByAppId($app_id);
         if ($applications) {
-            return response()->json($applications, 200);
+            if ($applications->status !== "approve") {
+                return response()->json(["message" => "can not auth with this application ( application still not approved ) "], 403);
+            } else {
+                if ($applications->app_config->redirect_uri === $request->all()["redirect_uri"]) {
+                    return response()->json(["message" => "app found"], 200);
+                } else {
+                    return response()->json(["message" => "No match Redirect uri please check your redirect in your application config"], 403);
+                }
+            }
         }
         return response()->json(["message" => "app not found"], 404);
     }
@@ -78,7 +86,7 @@ class ApplicationController extends Controller
             return response()->json(["message" => "not match"], 404);
         }
         if ($client_secret == $application->secret_id) {
-            return response()->json(["message" => "matach!!"], 200);
+            return response()->json(["message" => "match!!"], 200);
         } else {
             return response()->json(["message" => "not match"], 404);
         }

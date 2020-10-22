@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Model\Application;
 use App\Model\ApplicationConfig;
 use App\Model\Page;
+use Illuminate\Support\Arr;
 
 class ApplicationRepository implements ApplicationRepositoryInterface
 {
@@ -41,21 +42,26 @@ class ApplicationRepository implements ApplicationRepositoryInterface
     public function getApplicationByAppId($app_id)
     {
         $app = Application::where('app_id', $app_id)->first();
+        if ($app) {
+            $app["app_config"] = $app->application_config()->first();
+        }
         return $app;
     }
 
     public function getApplicationById($id)
     {
         $app = Application::where('id', $id)->first();
-
+        if ($app) {
+            $app["app_config"] = $app->application_config()->first();
+        }
         return $app;
     }
 
     public function createApplication($data)
     {
         $app = new Application();
-        $app->app_id = generateCode(5);
-        $app->secret_id = generateCode(8);
+        $app->app_id = generateCode(8);
+        $app->secret_id = generateCode(25);
         $app->name = $data["name"];
         $app->user_id = $data["user_id"];
         $app->detail = $data["detail"];
@@ -63,6 +69,7 @@ class ApplicationRepository implements ApplicationRepositoryInterface
 
         $app_config = new ApplicationConfig();
         $app_config->app_id = $app->id;
+        $app_config->redirect_uri = Arr::get($data, 'redirect_uri', "");
         $app_config->save();
 
         $page = new Page();
@@ -79,8 +86,9 @@ class ApplicationRepository implements ApplicationRepositoryInterface
             return false;
         }
         $app->detail = $data["detail"];
-
         $app_config = $app->application_config()->first();
+
+        $app_config->redirect_uri = Arr::get($data, 'redirect_uri', "");
         $app_config->save();
         $app->save();
 
