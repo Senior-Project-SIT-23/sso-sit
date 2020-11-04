@@ -28,7 +28,7 @@ class UserController extends Controller
             $user = $this->user->getUserById($data["user_id"]);
             return response()->json($user, 200);
         } else {
-            return response()->json(["mesage" => "fail create or update user something went wrong in service sso_mange pls contact developer"], 500);
+            return response()->json(["message" => "fail create or update user something went wrong in service sso_mange pls contact developer"], 500);
         }
     }
 
@@ -38,7 +38,7 @@ class UserController extends Controller
         if ($user) {
             return response()->json($user, 200);
         } else {
-            return response()->json(["mesage" => "user not found"], 404);
+            return response()->json(["message" => "user not found"], 404);
         }
     }
 
