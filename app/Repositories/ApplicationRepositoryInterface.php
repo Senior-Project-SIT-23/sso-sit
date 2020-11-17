@@ -11,6 +11,7 @@ interface ApplicationRepositoryInterface
     public function getAllByUserId($user_id);
     public function getAllApplications();
     public function createApplication($data);
+    public function upsertPage($data);
     public function updateApplication($data);
     public function updateStatusApplicationById($data);
     public function deleteApplicationById($id);

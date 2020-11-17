@@ -9,6 +9,18 @@ use Illuminate\Support\Arr;
 
 class ApplicationRepository implements ApplicationRepositoryInterface
 {
+    private $BUTTON_COLOR = "BUTTON_COLOR";
+    private $BUTTON_TEXT_COLOR = "BUTTON_TEXT_COLOR";
+    private $BUTTON_HOVER_COLOR = "BUTTON_HOVER_COLOR";
+    private $BUTTON_HOVER_TEXT_COLOR = "BUTTON_HOVER_TEXT_COLOR";
+    private $SIGN_IN_WORD = "SIGN_IN_WORD";
+    private $LABEL_WORD = "LABEL_WORD";
+    private $IMAGE_URL = "IMAGE_URL";
+    private $TEXT_COLOR = "TEXT_COLOR";
+    private $BACKGROUND_COLOR = "BACKGROUND_COLOR";
+    private $ICON_COLOR = "ICON_COLOR";
+    private $ALL_CONFIGS = ["ICON_COLOR", "BACKGROUND_COLOR", "BUTTON_COLOR", "BUTTON_TEXT_COLOR", "BUTTON_HOVER_COLOR", "BUTTON_HOVER_TEXT_COLOR", "SIGN_IN_WORD", "LABEL_WORD", "IMAGE_URL", "TEXT_COLOR"];
+
     public function getAllApplications()
     {
         $apps = Application::all();
@@ -44,6 +56,11 @@ class ApplicationRepository implements ApplicationRepositoryInterface
         $app = Application::where('app_id', $app_id)->first();
         if ($app) {
             $app["app_config"] = $app->application_config()->first();
+            $pages = [];
+            foreach ($app->pages()->get() as $value) {
+                $pages[$value->key] = $value->value;
+            }
+            $app["app_pages"] = $pages;
         }
         return $app;
     }
@@ -53,6 +70,11 @@ class ApplicationRepository implements ApplicationRepositoryInterface
         $app = Application::where('id', $id)->first();
         if ($app) {
             $app["app_config"] = $app->application_config()->first();
+            $pages = [];
+            foreach ($app->pages()->get() as $value) {
+                $pages[$value->key] = $value->value;
+            }
+            $app["app_pages"] = $pages;
         }
         return $app;
     }
@@ -72,10 +94,6 @@ class ApplicationRepository implements ApplicationRepositoryInterface
         $app_config->redirect_uri = Arr::get($data, 'redirect_uri', "");
         $app_config->save();
 
-        $page = new Page();
-        $page->app_id = $app->id;
-        $page->save();
-
         return $app;
     }
 
@@ -94,6 +112,24 @@ class ApplicationRepository implements ApplicationRepositoryInterface
 
 
         return $app;
+    }
+
+    public function upsertPage($data)
+    {
+        foreach ($this->ALL_CONFIGS as $config_key) {
+            $page = Page::where("app_id", "$data[app_id]")->where("key", $config_key)->first();
+            if ($page) {
+                $page->value = $data[$config_key];
+                $page->save();
+            } else {
+                $page = new Page;
+                $page->app_id = $data["app_id"];
+                $page->key = $config_key;
+                $page->value = $data[$config_key];
+                $page->save();
+            }
+        }
+        return;
     }
 
     public function updateStatusApplicationById($data)

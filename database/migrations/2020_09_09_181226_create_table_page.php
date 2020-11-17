@@ -14,8 +14,10 @@ class CreateTablePage extends Migration
     public function up()
     {
         Schema::create('pages', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements("id");
             $table->bigInteger("app_id")->unsigned();
+            $table->string("key");
+            $table->text("value");
             $table->timestamps();
 
             $table->foreign('app_id')->references('id')->on('applications')->onDelete('cascade');

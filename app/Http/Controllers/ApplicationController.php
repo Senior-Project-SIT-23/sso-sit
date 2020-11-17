@@ -25,7 +25,11 @@ class ApplicationController extends Controller
                 return response()->json(["message" => "can not auth with this application ( application still not approved ) "], 403);
             } else {
                 if ($applications->app_config->redirect_uri === $request->all()["redirect_uri"]) {
-                    return response()->json(["message" => "app found"], 200);
+                    unset($applications["secret_id"]);
+                    unset($applications["app_id"]);
+                    unset($applications["created_at"]);
+                    unset($applications["updated_at"]);
+                    return response()->json(["data" => $applications], 200);
                 } else {
                     return response()->json(["message" => "No match Redirect uri please check your redirect in your application config"], 403);
                 }
@@ -141,6 +145,14 @@ class ApplicationController extends Controller
         $log_history = ["key" => "CreateAllApplication", "value" => "fail to create apps", "user_id" => $user_id];
         $this->history->createHistory($log_history);
         return response()->json("something wrong", 400);
+    }
+
+    public function upsertPage(Request $request, $id)
+    {
+        $data = json_decode($request->all()["data"], true);
+        $data["app_id"] = $id;
+        $res = $this->app->upsertPage($data);
+        return response()->json($res, 200);
     }
 
     public function update(Request $request, $id)

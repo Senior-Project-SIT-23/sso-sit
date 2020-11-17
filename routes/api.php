@@ -26,6 +26,7 @@ Route::group(['middleware' => 'handleputformdata'], function () {
     Route::group(['middleware' => 'checkAuth'], function () {
 
         Route::post('/applications', 'ApplicationController@store');
+        Route::post('/applications/{id}/pages', 'ApplicationController@upsertPage');
         Route::get('/my-applications', 'ApplicationController@indexMe');
         Route::put('/applications/{id}', 'ApplicationController@update');
         Route::delete('/applications/{id}', 'ApplicationController@destroy');

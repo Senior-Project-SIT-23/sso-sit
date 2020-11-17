@@ -20,6 +20,6 @@ class Application extends Model
 
     public function pages()
     {
-        return $this->hasOne(Page::class, 'app_id');
+        return $this->hasMany(Page::class, 'app_id');
     }
 }
